@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>말뿌리 도감</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Noto+Serif+KR:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.11.0/dist/tabler-icons.min.css">
+<style>
+:root{
+ --paper:#eef2ec;--card:#fbfcfa;--ink:#1f3327;--mute:#4d5d55;--line:#c7d2c8;--edge:#7d9184;--red:#a82a1f;
+ --fill-ok:#2f6b4a;--fill-bad:#b3302a;
+ --sans:"Pretendard Variable",Pretendard,"Noto Sans KR",-apple-system,"Malgun Gothic",sans-serif;
+ --serif:"Noto Serif KR","Nanum Myeongjo",serif;
+ --brush:"Nanum Brush Script","Noto Serif KR",serif;
+}
+@media (prefers-color-scheme:dark){:root{--paper:#121814;--card:#1a221d;--ink:#e8efe9;--mute:#aab9af;--line:#2f3d34;--edge:#6f8576;--red:#ff9e93}}
+*{box-sizing:border-box}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:1rem;line-height:1.7;min-height:100vh}
+::selection{background:var(--ink);color:var(--paper)}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 104px}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+header{display:flex;align-items:flex-end;gap:10px;padding:4px 0 12px;border-bottom:1px solid var(--ink)}
+.seal{background:var(--fill-bad);color:#fff;width:40px;height:40px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:var(--serif);font-weight:700;font-size:14px;line-height:1.05;transform:rotate(4deg);flex:none;margin-bottom:2px}
+h1{margin:0;font-family:var(--brush);font-weight:400;font-size:clamp(32px,9.5vw,42px);line-height:1;letter-spacing:1px}
+.prog{margin:12px 0 18px}
+.prog .t{display:flex;justify-content:space-between;font-size:.875rem;color:var(--mute);margin-bottom:6px}
+.bar{height:6px;background:var(--line)}
+.bar i{display:block;height:100%;background:var(--fill-bad);transition:width .3s}
+h2{margin:0 0 8px;font-size:1rem;font-weight:700}
+.hero{width:100%;text-align:left;display:block;background:var(--card);border:1px solid var(--ink);padding:16px 18px 18px;margin-bottom:18px}
+.hero .nm{font-family:var(--serif);font-weight:700;font-size:2.5rem;line-height:1.15;margin:2px 0 6px;display:block}
+.hero .df{color:var(--mute);font-size:.9375rem;display:block;margin-bottom:12px}
+.hero .go{display:inline-flex;align-items:center;gap:6px;background:var(--ink);color:var(--paper);font-weight:700;font-size:.9375rem;padding:10px 16px;min-height:44px}
+.hero .done{display:inline-block;margin-left:10px}
+.intro{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--edge);background:var(--card);padding:12px 14px;margin-bottom:18px;font-size:.9375rem}
+.intro p{margin:0;flex:1}
+.intro button{background:none;border:0;min-width:44px;min-height:44px;margin:-10px -10px -10px 0;color:var(--mute);font-size:1.25rem}
+.sb{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--edge);padding:0 12px;margin-bottom:18px;min-height:48px}
+.sb input{flex:1;border:0;background:transparent;font-size:1rem;outline:none;min-width:0;padding:10px 0}
+.sb:focus-within{outline:3px solid var(--ink);outline-offset:2px}
+.sh{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.shelf{text-align:left;background:var(--card);border:1px solid var(--edge);padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-height:112px}
+.shelf b{font-family:var(--serif);font-size:1.0625rem;font-weight:700}
+.shelf .d{font-size:.8125rem;color:var(--mute);line-height:1.45}
+.shelf .c{font-size:.875rem;font-weight:600;margin-top:auto;padding-top:8px}
+.mb{display:block;height:4px;background:var(--line);margin-top:4px}
+.mb i{display:block;height:100%;background:var(--fill-bad)}
+.bk{background:none;border:0;color:var(--mute);font-size:.9375rem;min-height:44px;padding:0 8px 0 0;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.spec,.entry,.card{background:var(--card);border:1px solid var(--ink);padding:20px 18px;position:relative}
+.label{display:flex;flex-wrap:wrap;gap:6px;font-size:.8125rem;margin-bottom:6px}
+.label span{border:1px solid var(--mute);color:var(--mute);padding:1px 8px}
+.label span:first-child{background:var(--ink);color:var(--card);border-color:var(--ink)}
+.label .w{color:var(--red);border-color:var(--red)}
+.gd{margin:0 0 4px;font-size:.875rem;color:var(--mute)}
+.pair{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px 14px;font-family:var(--serif);font-weight:700;font-size:2.5rem;line-height:1.2;margin:10px 0 2px;word-break:keep-all}
+.pair .vs{font-family:var(--sans);font-weight:500;font-size:.875rem;color:var(--mute)}
+.no{color:var(--mute);text-decoration:line-through;text-decoration-color:var(--fill-bad);text-decoration-thickness:3px}
+.sec{margin-top:16px}
+.lb{display:block;font-size:.875rem;font-weight:700;color:var(--red);margin-bottom:2px}
+.sec p{margin:0;font-size:1rem;line-height:1.75;word-break:keep-all}
+.sec.mu p{color:var(--mute)}
+.sec.mu .lb{color:var(--mute)}
+.note{margin-top:16px;padding-top:12px;border-top:1px solid var(--line);font-size:.9375rem;line-height:1.7;color:var(--mute);word-break:keep-all}
+.note b{color:var(--red);margin-right:8px}
+.ref{font-size:.8125rem;color:var(--mute)}
+.endrow{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:14px;min-height:48px}
+.endrow .stamp{margin:0 4px 0 0;flex:none}
+.pick,.next{margin-top:16px;width:100%;min-height:48px;padding:10px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font-weight:700;font-size:1rem}
+.pick.on{background:transparent;color:var(--ink)}
+.stamp{display:inline-block;width:44px;height:44px;line-height:38px;text-align:center;border:3px solid var(--red);color:var(--red);font-family:var(--brush);font-size:28px;border-radius:5px;transform:rotate(8deg);vertical-align:middle;margin:0 12px 4px 4px;animation:pop .35s cubic-bezier(.22,1,.36,1)}
+.stamp.cor{position:absolute;right:16px;top:14px;pointer-events:none}
+.stamp.bad{border-color:var(--mute);color:var(--mute);border-style:dashed}
+@keyframes pop{from{transform:scale(1.7) rotate(-18deg);opacity:0}to{transform:scale(1) rotate(8deg);opacity:1}}
+@media (prefers-reduced-motion:reduce){.stamp{animation:none}.bar i{transition:none}}
+.big{font-family:var(--serif);font-size:1.5rem;font-weight:700;margin:0 0 4px;line-height:1.3}
+.mu{color:var(--mute)}
+.row{width:100%;text-align:left;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-bottom:0;padding:8px 14px;min-height:56px}
+.row:last-of-type{border-bottom:1px solid var(--line)}
+.row .n{font-size:.8125rem;color:var(--mute);flex:none;width:2.2em}
+.row b{font-family:var(--serif);font-size:1.125rem;font-weight:700;flex:none;max-width:48%}
+.row .df{font-size:.875rem;color:var(--mute);overflow:hidden;white-space:nowrap;text-overflow:ellipsis;flex:1;min-width:0}
+.row .mk{margin-left:auto;color:var(--red);font-family:var(--brush);font-size:1.25rem;flex:none}
+.ix{display:flex;gap:6px;margin:0 -16px 14px;padding:0 16px 4px;overflow-x:auto;scrollbar-width:none}
+.ix::-webkit-scrollbar{display:none}
+.ix button{flex:none;min-width:44px;min-height:44px;border:1px solid var(--edge);background:var(--card);font-size:1rem;font-weight:600}
+.ix button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.hw{font-family:var(--serif);font-weight:700;font-size:2.25rem;line-height:1.2}
+.hw small{font-family:var(--sans);font-weight:500;font-size:.9375rem}
+.meta{font-size:.875rem;color:var(--mute);margin:2px 0 4px}
+.q{font-size:1.25rem;line-height:1.8;margin:8px 0 16px;word-break:keep-all}
+.opts{display:flex;gap:10px}
+.opts button{flex:1;min-height:64px;padding:12px 6px;font-family:var(--serif);font-weight:700;font-size:1.375rem;border:1px solid var(--ink);background:var(--card)}
+.opts button.right{background:var(--fill-ok);color:#fff;border-color:var(--fill-ok)}
+.opts button.wrong{background:var(--fill-bad);color:#fff;border-color:var(--fill-bad)}
+.score{display:flex;justify-content:space-between;font-size:.875rem;color:var(--mute);margin-bottom:8px}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--ink);z-index:5;padding-bottom:env(safe-area-inset-bottom)}
+.tabs div{max-width:560px;margin:0 auto;display:flex}
+.tabs button{flex:1;min-height:60px;padding:8px 0;border:0;background:transparent;font-size:.875rem;font-weight:700;color:var(--mute);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.tabs button i{font-size:1.375rem}
+.tabs button+button{border-left:1px solid var(--line)}
+.tabs button.on{background:var(--ink);color:var(--paper)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>말뿌리 도감</h1><div class="seal" aria-hidden="true">根<br>圖</div></header>
+<div class="prog" role="status" aria-live="polite"><div class="t"><span id="pt">채집 0 / 0</span><span id="pp">0%</span></div><div class="bar"><i id="pb" style="width:0"></i></div></div>
+<main id="app"></main>
+</div>
+<nav class="tabs" aria-label="주 메뉴"><div>
+<button data-tab="home" class="on"><i class="ti ti-books" aria-hidden="true"></i>도감</button>
+<button data-tab="dict"><i class="ti ti-book-2" aria-hidden="true"></i>사전</button>
+<button data-tab="quiz"><i class="ti ti-plant-2" aria-hidden="true"></i>채집하기</button>
+</div></nav>
+<script src="data/_h.js"></script>
+<script src="data/roots.js"></script>
+<script src="data/hanja_words.js"></script>
+<script src="data/myths.js"></script>
+<script src="data/hanja_chars.js"></script>
+<script src="data/spelling.js"></script>
+<script src="data/rules.js"></script>
+<script src="data/verified.js"></script>
+<script>
+(function(){
+// verified:false = 규정 확인 필요
+var CARDS=[
+{id:1,ok:"며칠",no:"몇일",tag:"자주 틀림",why:"'몇 일'로 나눠 쓰지 않고 소리 나는 대로 '며칠'이라고 써요.",tip:"'몇 월'은 있지만 '몇 일'은 없어요. 며칠 = 그달의 몇 번째 날, 또는 날의 수.",q:"오늘이 몇 월 ___이야?",v:true},
+{id:2,r:"사전은 '늘이다'를 '본디보다 더 길어지게 하다', '늘리다'를 '넓이·부피 따위를 본디보다 커지게 하다'로 풀이해요.",ok:"늘이다",no:"늘리다",tag:"뜻이 달라요",why:"길이를 길게 하면 '늘이다', 수·양·크기를 많게 하면 '늘리다'예요.",tip:"고무줄·바짓단은 늘이고, 재산·실력·몸무게는 늘려요.",q:"고무줄을 길게 ___.",v:true},
+{id:3,r:"天障(하늘 천 + 막을 장). 하늘을 막아 가리는 것이라는 뜻이에요. '천정(天井)'은 '천정부지'에서만 써요.",ok:"천장",no:"천정",tag:"예외 있음",why:"건물 안쪽 위는 '천장'이 표준어예요.",tip:"'천정'은 '천정부지(물가가 천정부지로 오르다)'에서만 써요.",q:"방 ___에 형광등이 달려 있다.",v:true},
+{id:4,r:"옛말 '잇-'(있-)에 '-다가'가 붙은 말이에요. 소리가 굳어지면서 '조금 뒤'라는 뜻의 따로 쓰는 말이 됐어요.",ok:"이따가",no:"있다가",tag:"뜻이 달라요",why:"'조금 후에'는 '이따가', '머물러 있고 나서'는 '있다가'예요.",tip:"'이따가 전화할게' → '조금 있다가'와 같은 뜻이지만 쓸 땐 '이따가'로 적어요.",q:"___ 전화할게.",v:true},
+{id:5,ok:"간단치",no:"간단지",tag:"줄임말",why:"'간단하지'가 줄 때 'ㄴ' 뒤에서는 'ㅎ'이 'ㅈ'과 합쳐져 '간단치'가 돼요.",tip:"안울림소리(ㄱ·ㅂ·ㅅ) 뒤에서는 '하'가 통째로 빠져요: 섭섭하지 → 섭섭지.",q:"그 문제는 ___ 않다.",v:true},
+{id:6,r:"'어찌했든'이 줄어든 말이에요. 어찌 + 했든 → 어쨌든.",ok:"어쨌든",no:"어쨋든",tag:"자주 틀림",why:"'어찌했든'이 줄어든 말이라 '했'의 받침 'ㅆ'을 그대로 써요.",tip:"'어쨌든'의 '쨌'은 '했'과 같은 'ㅆ' 받침이에요.",q:"___ 시작해 보자.",v:true},
+{id:7,r:"'걸음'은 '걷다'에 '-음'이 붙어 명사가 된 말이에요.",ok:"걸음",no:"거름",tag:"뜻이 달라요",why:"'걸음'은 걷는 일, '거름'은 땅을 기름지게 하는 비료예요.",tip:"첫 걸음을 떼다 / 밭에 거름을 주다.",q:"아기가 첫 ___을 뗐다.",v:true},
+{id:8,r:"'곱'은 두 배, '-빼기'는 그런 특징을 가진 사람이나 물건을 뜻하는 말이에요. 곱 + -빼기 = 두 배로 많은 것이에요.",ok:"곱빼기",no:"곱배기",tag:"자주 틀림",why:"'곱빼기'가 표준어예요. '뚝배기'도 같은 소리로 'ㅃ'을 써요.",tip:"곱빼기·뚝배기·주전자처럼 'ㅃ'이 들어가는 말은 외워 두면 편해요.",q:"짜장면 ___ 하나 주세요.",v:true},
+{id:9,r:"'설레다'에 '-ㅁ'이 붙어 명사가 된 말이에요. 그래서 '설렘'이에요.",ok:"설렘",no:"설레임",tag:"자주 틀림",why:"'설레다'의 명사형은 '설렘'이에요. '설레임'은 틀린 표기예요.",tip:"'-ㅁ'을 붙여 만든 말: 설레다 → 설렘, 두근거리다 → 두근거림.",q:"여행 전날은 ___으로 잠이 안 와요.",v:true},
+{id:10,r:"'금시(今時)에'가 줄어서 '금세'가 됐어요.",ok:"금세",no:"금새",tag:"자주 틀림",why:"'금시에'가 줄어서 '금세'가 됐어요. '금새'는 물건 값을 뜻하는 다른 말이에요.",tip:"'금세' = 지금 바로, 곧.",q:"아이스크림이 ___ 녹았어요.",v:true},
+{id:11,ok:"부기",no:"붓기",tag:"확인 필요",why:"몸이 부은 상태는 한자어 '부기(浮氣)'로 써요.",tip:"'붓다'의 명사형 '붓기'와 같이 쓰이는지는 사전에서 확인이 필요해요.",q:"라면 먹은 다음 날은 얼굴 ___가 심해요.",v:false},
+{id:12,r:"葛(칡 갈) + 藤(등나무 등). 칡과 등나무가 서로 감고 얽히는 데서 '서로 뜻이 엇갈려 부딪힘'이 됐어요.",ok:"갈등",no:"",tag:"한자 풀이",why:"葛(칡 갈) + 藤(등나무 등). 칡과 등나무가 서로 감고 얽히는 데서 '서로 뜻이 엇갈려 부딪힘'이 됐어요.",tip:"두 덩굴이 한 나무를 서로 감는 모습을 떠올리면 안 잊어요.",q:"",v:true},
+{id:13,r:"看(볼 간) = 손(手)을 눈(目) 위에 얹은 모양. 자세히 살펴본다는 뜻이에요.",ok:"살펴봄",no:"",tag:"한자 풀이",why:"看(볼 간) = 손(手)을 눈(目) 위에 얹은 모양. 자세히 살펴본다는 뜻이에요.",tip:"햇빛을 가리고 멀리 보는 손 모양을 떠올려 보세요.",q:"",v:true},
+{id:14,r:"步(걸음 보)는 발자국 두 개가 이어진 모양에서 왔어요.",ok:"걸음 步",no:"",tag:"한자 풀이",why:"步(걸음 보)는 발자국 두 개가 이어진 모양에서 왔어요.",tip:"'걸음'과 '거름'은 이 한자 그림으로 구분하세요.",q:"",v:true},
+{id:15,ok:"않았다",no:"안았다",tag:"자주 틀림",why:"'않-'은 '아니하-'의 준말로 서술어 자리에 와요. '안'은 '아니'의 준말로 서술어 앞에 붙는 부사예요.",tip:"'안 먹었다'처럼 띄어 쓰는 '안'과 '먹지 않았다'의 '않'을 구분하세요. '아니'로 바꿔 보면 돼요.",q:"숙제를 하지 ___.",v:true},
+{id:16,ok:"돼",no:"되",tag:"자주 틀림",why:"'돼'는 '되어'의 준말이에요. 문장 끝에서 '되'만 쓰면 어색해요.",tip:"'되어'를 넣어 보고 자연스러우면 '돼', 안 되면 '되'예요. 그렇게 하면 안 돼(되어).",q:"그렇게 하면 안 ___.",v:true},
+{id:17,ok:"로서",no:"로써",tag:"뜻이 달라요",why:"'-로서'는 자격·지위, '-로써'는 수단·도구를 나타내요.",tip:"학생으로서 / 대화로써 풀다. '자격이면 서, 도구면 써'로 외워요.",q:"학생___ 최선을 다했다.",v:true},
+{id:18,ok:"낫다",no:"낮다",tag:"뜻이 달라요",why:"병이 없어지거나 더 좋을 때는 '낫다', 높이나 정도가 아래일 때는 '낮다'예요.",tip:"감기가 낫다 / 천장이 낮다. '낫다'는 'ㅅ' 불규칙이라 '나아'로 바뀌어요.",q:"감기가 빨리 ___.",v:true},
+{id:19,ok:"맞혔다",no:"맞췄다",tag:"뜻이 달라요",why:"정답을 골라내면 '맞히다', 서로 어긋나지 않게 대면 '맞추다'예요.",tip:"퀴즈 정답을 맞히다 / 퍼즐·시간·간을 맞추다.",q:"퀴즈 정답을 ___.",v:true},
+{id:20,ok:"다르다",no:"틀리다",tag:"뜻이 달라요",why:"'다르다'는 같지 않음, '틀리다'는 옳지 않음이에요.",tip:"'너와 나는 생각이 다르다'가 맞아요. 시험 답이 틀리다 / 두 사람이 다르다로 구분하세요.",q:"너와 나는 생각이 ___.",v:true},
+{id:21,ok:"가리키고",no:"가르치고",tag:"뜻이 달라요",why:"방향이나 대상을 짚어 알리면 '가리키다', 지식·기술을 알려 주면 '가르치다'예요.",tip:"손가락으로 가리키다 / 학생을 가르치다.",q:"시곗바늘이 3시를 ___ 있다.",v:true},
+{id:22,ok:"바란다",no:"바랜다",tag:"뜻이 달라요",why:"무엇을 원하면 '바라다', 색이 변하면 '바래다'예요.",tip:"행복하길 바라다 / 사진이 누렇게 바래다.",q:"나는 네가 행복하기를 ___.",v:true},
+{id:23,ok:"왠지",no:"웬지",tag:"자주 틀림",why:"'왠지'는 '왜인지'의 준말이에요. 이 한 단어에서만 '왠'을 쓰고 나머지는 모두 '웬'이에요.",tip:"웬일, 웬걸, 웬만하다는 '웬'. '왜인지'로 바꿔도 말이 되면 '왠'.",q:"___ 오늘은 좋은 일이 생길 것 같아.",v:true},
+{id:24,ok:"웬",no:"왠",tag:"자주 틀림",why:"'웬'은 '어찌 된, 어떠한'의 뜻이에요. '왠'은 '왠지' 외에는 쓰지 않아요.",tip:"이게 웬 떡이야 / 웬일이야 / 웬만하면.",q:"이게 ___ 일이야?",v:true},
+{id:25,ok:"어떡해",no:"어떻게",tag:"뜻이 달라요",why:"'어떡해'는 '어떻게 해'의 준말로 문장을 맺어요. '어떻게'는 방법을 묻는 부사라 뒤에 서술어가 이어져요.",tip:"'어떻게 해'로 풀어 써도 말이 되면 '어떡해'. 큰일 났다, 어떡해!",q:"큰일 났다, 나 ___?",v:true},
+{id:26,ok:"합격률",no:"합격율",tag:"자주 틀림",why:"앞말이 모음이나 'ㄴ' 받침이면 '율', 그 외 받침이면 '률'이에요.",tip:"비율·백분율·규율은 '율', 합격률·성공률·확률은 '률'이에요.",q:"올해 ___ 크게 높아졌다.",v:true},
+{id:27,r:"'오래간만'이 줄어서 '오랜만'이 됐어요.",ok:"오랜만",no:"오랫만",tag:"자주 틀림",why:"'오래간만'이 줄어든 말이라 사이시옷 없이 '오랜만'이에요.",tip:"'오랫동안'은 사이시옷이 있고 '오랜만'은 없어요.",q:"정말 ___이다!",v:true},
+{id:28,ok:"삼가",no:"삼가해",tag:"자주 틀림",why:"기본형이 '삼가다'라서 '삼가', '삼가서'로 써요. '삼가하다'는 틀린 말이에요.",tip:"'하다'를 붙이지 않는 말이에요. 흡연은 삼가 주세요.",q:"흡연은 ___ 주세요.",v:true},
+{id:29,r:"稀(드물 희) + 罕(드물 한). 둘 다 '드물다'는 뜻이에요.",ok:"희한하다",no:"희안하다",tag:"자주 틀림",why:"드물 희(稀) + 드물 한(罕)으로 '매우 드물다'는 뜻이라 '희한하다'예요.",tip:"한자 '罕'이 '한'이라는 점만 기억하세요.",q:"참 ___ 일이네.",v:true},
+{id:30,r:"役(부릴 역) + 割(나눌 할). 일을 나누어 맡는다는 뜻이에요.",ok:"역할",no:"역활",tag:"자주 틀림",why:"부릴 역(役) + 나눌 할(割)이라 '역할'이에요.",tip:"'나눌 할(割)'이 들어간 말이에요. 역할=일을 나누어 맡다.",q:"각자의 ___을 맡았다.",v:true},
+{id:31,ok:"육개장",no:"육계장",tag:"자주 틀림",why:"고기 육(肉) + 개장(개장국 계열 국)이라 '육개장'이 표준어예요.",tip:"닭을 넣는 건 '닭개장'이에요.",q:"오늘 점심은 ___ 먹자.",v:true},
+{id:32,ok:"깨끗이",no:"깨끗히",tag:"자주 틀림",why:"'ㅅ' 받침 뒤에서는 '-이'를 써요.",tip:"깨끗이, 반듯이, 뚜렷이. 소리가 '이'로 나면 '이'로 적어요.",q:"방을 ___ 청소했다.",v:true},
+{id:33,ok:"일부러",no:"일부로",tag:"자주 틀림",why:"'일부러'는 마음을 먹고 하는 것을 뜻하는 한 단어예요.",tip:"'일부로'는 표준어가 아니에요. 끝은 항상 '-러'예요.",q:"나를 ___ 피한 거야?",v:true},
+{id:34,ok:"눈곱",no:"눈꼽",tag:"자주 틀림",why:"'눈곱'이 표준어예요.",tip:"'곱'은 눈에서 나오는 끈끈한 것을 뜻해요. '눈곱만큼'이라고도 해요.",q:"아침에 일어나니 ___이 꼈다.",v:true},
+{id:35,ok:"어이없다",no:"어의없다",tag:"자주 틀림",why:"'어이'는 일이 어이없게 느껴지는 마음을 뜻해요.",tip:"'어의(御醫)'는 임금의 주치의라 다른 말이에요.",q:"너무 ___.",v:true},
+{id:36,ok:"봬요",no:"뵈요",tag:"자주 틀림",why:"'봬요'는 '뵈어요'의 준말이에요.",tip:"'돼'와 같은 원리예요. '뵈어요'로 풀어도 말이 되면 '봬요'.",q:"내일 ___.",v:true},
+{id:37,r:"決濟(결제)는 '결단하여 마무리 짓다'에서 와서 돈을 치르는 일을, 決裁(결재)는 '결단하여 재가하다'에서 와서 상사의 승인을 가리켜요.",ok:"결제",no:"결재",tag:"뜻이 달라요",why:"'결제'는 돈을 치르는 일이고, '결재'는 상사가 서류를 승인하는 일이에요.",tip:"카드로 결제 / 부장님께 결재.",q:"카드로 ___했다.",v:true},
+{id:38,ok:"반드시",no:"반듯이",tag:"뜻이 달라요",why:"'반드시'는 꼭, '반듯이'는 기울지 않고 바르게예요.",tip:"약속은 반드시 / 줄을 반듯이 맞추다.",q:"약속은 ___ 지킬게.",v:true},
+{id:39,ok:"부딪혔다",no:"부딪쳤다",tag:"뜻이 달라요",why:"세게 받힘을 당하면 '부딪히다(피동)', 스스로 힘을 주어 대면 '부딪치다(능동)'예요.",tip:"차에 부딪혔다 / 파도가 바위에 부딪쳤다.",q:"아이가 지나가던 자전거에 ___.",v:true},
+{id:40,r:"志向(뜻 지 + 향할 향)은 뜻이 향한다, 止揚(그칠 지 + 날릴 양)은 그치게 한다는 한자 구성이에요.",ok:"지향",no:"지양",tag:"뜻이 달라요",why:"'지향(志向)'은 목표로 삼아 나아감, '지양(止揚)'은 하지 않으려 함이에요.",tip:"뜻이 거의 반대라서 헷갈리지 마세요. 평화를 지향하다 / 폭력을 지양하다.",q:"평화를 ___하는 사회.",v:true},
+{id:41,ok:"한창",no:"한참",tag:"뜻이 달라요",why:"'한창'은 가장 활발한 때, '한참'은 시간이 꽤 오래 흐른 동안이에요.",tip:"벚꽃이 한창이다 / 한참을 기다렸다.",q:"벚꽃이 ___ 피었다.",v:true},
+{id:42,r:"無難(없을 무 + 어려울 난). 어려움이 없다는 뜻이에요.",ok:"무난하다",no:"문안하다",tag:"자주 틀림",why:"어려움이 없다는 뜻의 '무난(無難)하다'예요.",tip:"'難(어려울 난)'이 없다는 뜻. '문안'은 안부를 여쭙는 말이에요.",q:"그 정도면 ___.",v:true},
+{id:43,ok:"할 수 있다",no:"할수있다",tag:"띄어쓰기",why:"'수'는 의존명사라 앞말과 띄어 써요. '있다'도 별개 단어라 띄어요.",tip:"'수·것·데·바·뿐' 같은 의존명사는 앞말과 띄어 써요.",q:"나도 이 일을 ___.",v:true},
+{id:44,ok:"하나밖에",no:"하나 밖에",tag:"띄어쓰기",why:"'밖에'가 '그것 말고는'의 뜻으로 쓰이면 조사라 앞말에 붙여요. 뒤에는 보통 부정이 와요.",tip:"'하나밖에 없다'와 달리 장소를 나타낼 땐 '집 밖에'처럼 띄어요.",q:"남은 사과가 ___ 없다.",v:true},
+{id:45,r:"사람(人)이 나무(木)에 기대어 쉬는 모양이에요.",ok:"休 쉴 휴",no:"",tag:"한자 풀이",why:"사람(人)이 나무(木)에 기대어 쉬는 모양이에요.",tip:"휴식·휴가를 떠올리면 그림이 쉽게 그려져요.",q:"",v:true},
+{id:46,r:"사람(人)이 한 말(言)이라는 구성이에요. 말에 거짓이 없으면 믿을 수 있다는 뜻이에요.",ok:"信 믿을 신",no:"",tag:"한자 풀이",why:"사람(人)이 한 말(言)이라는 구성이에요. 말에 거짓이 없으면 믿을 수 있다는 뜻이에요.",tip:"신용·신뢰·신호에 모두 들어가요.",q:"",v:true},
+{id:47,r:"손(又)과 손(又)이 겹친 모양이에요. 손을 맞잡은 사이를 가리켜요.",ok:"友 벗 우",no:"",tag:"한자 풀이",why:"손(又)과 손(又)이 겹친 모양이에요. 손을 맞잡은 사이를 가리켜요.",tip:"우정·친우·우호에서 볼 수 있어요.",q:"",v:true},
+{id:48,r:"사전은 '얼-'에 '-우-'와 '-ㄴ'이 붙은 옛말 '얼운'에서 온 말로 풀이해요. 옛말 '얼다'는 '혼인하다'라는 뜻이었다고 봐요. '얼-'에 'ㄴ'이 붙은 '어른'이 명사가 되어, 혼인해서 한 사람 몫을 하는 이를 가리킨 것으로 봐요.",ok:"어른",no:"",tag:"우리말 뿌리",src:"통설",why:"나이나 지위가 높은 사람, 또는 다 자란 사람을 가리켜요.",tip:"표기는 소리 나는 대로 '어른'이에요. '어룬'은 틀린 표기예요.",q:"",v:true},
+{id:49,r:"옛말 '어리다'는 '어리석다'는 뜻이었어요. 훈민정음 서문의 '어린 백성'도 '어리석은 백성'이라는 뜻이에요. '나이가 적다'는 뜻은 나중에 생겼어요.",ok:"어리석다",no:"",tag:"우리말 뿌리",why:"슬기롭지 못하고 둔하다는 뜻이에요.",tip:"소리는 같은데 옛 뜻과 지금 뜻이 달라진 대표 낱말이에요.",q:"",v:true},
+{id:50,r:"'아기씨'가 줄어서 '아가씨'가 됐다고 봐요. 원래는 어린 귀한 사람을 높여 부르던 말이에요. 사전에는 어원이 따로 표시되어 있지 않아요.",ok:"아가씨",no:"",tag:"우리말 뿌리",src:"통설",why:"결혼하지 않은 젊은 여자를 부르는 말이에요.",tip:"'씨'는 사람을 높여 부르는 말로 쓰였어요.",q:"",v:true},
+{id:51,r:"'낱'은 '하나하나, 따로따로'를 뜻하는 말이에요. 낱 + 말 = 하나하나 떼어 낸 말이에요.",ok:"낱말",no:"",tag:"우리말 뿌리",why:"뜻을 가지고 홀로 쓰이는 말의 단위예요.",tip:"'낱개', '낱알', '낱권'에도 같은 '낱'이 들어 있어요.",q:"",v:true},
+{id:52,r:"'한글'은 주시경 선생과 그 제자들이 쓰기 시작한 이름으로 알려져 있어요. '한'은 '크다', '하나', '바르다' 등의 뜻을 가진 말이에요. 사전에는 어원이 따로 표시되어 있지 않아요.",ok:"한글",no:"",tag:"우리말 뿌리",src:"통설",why:"우리 글자의 이름이에요.",tip:"원래 이름은 '훈민정음'이고, '한글'은 20세기 초부터 쓰이기 시작했어요.",q:"",v:true},
+{id:53,r:"한자 '都大體'에서 왔어요. 都(모두 도) + 大(큰 대) + 體(몸 체)로, 일의 큰 줄기를 따져 묻는 말로 쓰여요.",ok:"도대체",no:"",tag:"한자어 뿌리",why:"이유를 따져 물을 때 쓰는 말이에요.",tip:"'도데체'로 쓰지 않도록 한자 '大(큰 대)'를 떠올리세요.",q:"",v:true},
+{id:54,r:"瞥眼間(별안간). 瞥(언뜻 볼 별) + 眼(눈 안) + 間(사이 간)으로, 눈 깜짝할 사이라는 뜻이에요.",ok:"별안간",no:"",tag:"한자어 뿌리",why:"갑작스럽게, 느닷없이라는 뜻이에요.",tip:"'眼'이 눈이라서 '눈 깜짝할 사이'로 외우면 쉬워요.",q:"",v:true},
+{id:55,r:"方今(방금). 方(바야흐로 방) + 今(이제 금)으로, '바로 이제'라는 뜻이에요.",ok:"방금",no:"",tag:"한자어 뿌리",why:"말하기 바로 전이나 이제 막이라는 뜻이에요.",tip:"'지금(只今)'에도 '今(이제 금)'이 들어 있어요.",q:"",v:true},
+{id:56,r:"何必(하필). 何(어찌 하) + 必(반드시 필)로, \"어찌 반드시\"라는 뜻이에요.",ok:"하필",no:"",tag:"한자어 뿌리",why:"다른 때도 많은데 하필 그때가 되었다는 못마땅함을 나타낼 때 써요.",tip:"'하필이면'은 '하필'에 '이면'이 붙은 말이에요.",q:"",v:true},
+{id:57,r:"於此彼(어차피). 於(어조사 어) + 此(이 차) + 彼(저 피)로, '이러나저러나'라는 뜻에서 왔어요.",ok:"어차피",no:"",tag:"한자어 뿌리",why:"어떻게 하든 마찬가지라는 뜻이에요.",tip:"'어짜피'는 틀린 표기예요. '此(이 차)'를 떠올려 '차'로 쓰세요.",q:"",v:true},
+{id:58,r:"瞬息間(순식간). 瞬(눈 깜짝일 순) + 息(숨 쉴 식) + 間(사이 간)으로, 눈 한 번 깜짝이고 숨 한 번 쉬는 사이예요.",ok:"순식간",no:"",tag:"한자어 뿌리",why:"아주 짧은 동안을 뜻해요.",tip:"'순간(瞬間)'에도 '눈 깜짝일 순(瞬)'이 들어 있어요.",q:"",v:true},
+{id:59,r:"洗手(씻을 세 + 손 수). 사전에는 손이나 얼굴을 씻는 일로 풀이돼요.",ok:"세수",no:"",tag:"한자어 뿌리",why:"손이나 얼굴을 씻는 일이에요.",tip:"글자에는 손(手)이 있는데 뜻은 얼굴 씻기로 옮겨 간 말이에요.",q:"",v:true},
+{"id":60,"r":"사전은 두 낱말로 나누어 실어요. '野壇法席'은 야외에서 크게 베푸는 설법의 자리를 뜻하는 불교 용어이고, '惹端법석'은 많은 사람이 모여 떠들썩하고 부산스러운 상태를 뜻해요.","ok":"야단법석","no":"","tag":"속설 가려내기","src":"속설 주의","myth":"절 밖에서 열던 법회에 사람이 몰려 떠들썩했던 데서 지금의 '야단법석'이 됐다는 이야기가 널리 퍼져 있어요. 하지만 사전은 이 두 낱말을 서로 다른 말로 풀이해요.","why":"여럿이 모여 시끄럽고 어수선한 모양을 뜻해요.","tip":"'야단(惹端)'은 일을 일으키는 단서라는 뜻에서 소란을 뜻하는 말이 됐다고 봐요.","q":"","v":true},
+{"id":61,"r":"사전에는 한자나 어원이 따로 표시되어 있지 않아요. 조선 시대 승려가 가는 두 길인 이판(理判, 수행)과 사판(事判, 절의 살림)에서 왔다고 보는 설이 널리 받아들여져요.","ok":"이판사판","no":"","tag":"한자어 뿌리","src":"통설","why":"막다른 데 이르러 어찌할 수 없게 된 지경이에요.","tip":"나중에는 '이판사판 해 보자'처럼 각오를 다지는 뜻으로도 써요.","q":"","v":true},
+{id:62,r:"日(해)과 月(달)이 합쳐진 글자예요. 해와 달이 함께 있으니 밝다는 뜻이에요.",ok:"明 밝을 명",no:"",tag:"한자 풀이",why:"해와 달이 함께 있으니 밝다는 뜻이에요.",tip:"명암·광명·설명에 들어가요.",q:"",v:true},
+{id:63,r:"女(여자)와 子(아이)가 합쳐진 글자예요. 여자가 아이를 안고 있는 모습에서 좋다는 뜻이 나왔다고 풀어요.",ok:"好 좋을 호",no:"",tag:"한자 풀이",why:"여자가 아이를 안고 있는 모습에서 좋다는 뜻이 나왔다고 풀어요.",tip:"호감·호의·우호에 들어가요.",q:"",v:true},
+{id:64,r:"田(밭)과 力(힘)이 합쳐진 글자예요. 밭에서 힘을 쓰는 사람이라는 뜻이에요.",ok:"男 사내 남",no:"",tag:"한자 풀이",why:"밭에서 힘을 쓰는 사람이라는 뜻이에요.",tip:"남자·장남·남성에 들어가요.",q:"",v:true},
+{id:65,r:"宀(집)과 子(아이)가 합쳐진 글자예요. 집 안에서 아이가 태어나 불어나듯, 글자도 불어난다는 뜻이에요.",ok:"字 글자 자",no:"",tag:"한자 풀이",why:"집 안에서 아이가 태어나 불어나듯, 글자도 불어난다는 뜻이에요.",tip:"문자·글자·한자에 들어가요.",q:"",v:true},
+{id:66,r:"가는 대쪽(竹簡)을 끈으로 엮어 놓은 모양을 본뜬 글자예요.",ok:"冊 책 책",no:"",tag:"한자 풀이",why:"가는 대쪽을 끈으로 엮어 놓은 모양을 본뜬 글자예요.",tip:"종이가 없던 때에는 대쪽에 글을 써서 엮어 책을 만들었어요.",q:"",v:true},
+{id:67,r:"木(나무)의 아래쪽 뿌리 자리에 표시를 더해 뿌리를 가리킨 글자예요.",ok:"本 뿌리 본",no:"",tag:"한자 풀이",why:"나무의 아래쪽 뿌리 자리에 표시를 더해 뿌리를 가리킨 글자예요.",tip:"근본·본래·본보기에 들어가요. 앱 이름의 '뿌리'와 같은 뜻이에요.",q:"",v:true},
+{id:68,r:"정확한 어원은 밝혀지지 않았어요. 사전은 \"상상 밖으로 엄청나게 큰 사람이나 물건\"이라는 뜻으로 풀어요.",ok:"어처구니",no:"",tag:"속설 가려내기",src:"속설 주의",myth:"맷돌 손잡이가 '어처구니'인데, 그게 없으면 맷돌을 돌릴 수 없어서 '어처구니없다'가 됐다는 이야기가 널리 퍼져 있어요. 궁궐 지붕의 잡상이라는 설도 있어요. 하지만 어원으로 확인된 근거는 약하다고 알려져 있어요.",why:"'어처구니없다'는 너무 어이가 없어 기가 막힐 때 써요.",tip:"어원이 확정되지 않은 말은 모른다고 적는 쪽이 정직해요.",q:"",v:true},
+{id:69,r:"바닷물고기 이름이에요. 이름의 정확한 유래는 확정되지 않았어요.",ok:"도루묵",no:"",tag:"속설 가려내기",src:"속설 주의",myth:"임금이 피난 중에 '묵'이라는 생선을 맛있게 먹고 '은어'라는 이름을 내렸다가, 궁에 돌아와서 맛이 없자 '도로 묵'이라 했다는 이야기가 전해져요. 재미있는 전설이지만 어원으로 확인된 건 아니에요.",why:"'말짱 도루묵'은 애쓴 일이 헛되게 됐을 때 써요.",tip:"전해 오는 이야기와 어원은 따로 봐야 해요.",q:"",v:true},
+{id:70,r:"'행주치마'의 '행주'는 부엌에서 그릇을 닦는 헝겊 '행주'와 같은 말로 봐요. 부엌일을 할 때 치마 위에 덧둘러 입는 치마예요.",ok:"행주치마",no:"",tag:"속설 가려내기",src:"속설 주의",myth:"임진왜란 때 행주산성에서 부녀자들이 치마로 돌을 날라 싸웠다는 이야기에서 '행주치마'가 됐다는 설이 널리 퍼져 있어요. 하지만 이 설은 근거가 약하다고 알려져 있어요.",why:"부엌일을 할 때 치마 위에 덧둘러 입는 치마예요.",tip:"유명한 일화가 있어도 말의 뿌리가 거기서 왔다고 단정하기는 어려워요.",q:"",v:true},
+{id:71,r:"시치미는 옛날 사냥에 쓰던 매의 주인을 밝히려고 주소를 적어 매의 꽁지 속에 매어 두던 네모꼴의 뿔이에요. 이것을 떼어 버리면 누구 매인지 알 수 없어서 '시치미를 떼다'가 모르는 척한다는 뜻이 됐어요.",ok:"시치미",no:"",tag:"속설 가려내기",src:"확정",why:"알면서도 모르는 체하는 태도를 뜻해요.",tip:"'시치미를 뗀다'는 이 표지를 떼어 낸다는 뜻이에요.",q:"",v:true},
+{id:72,r:"오지랖은 웃옷이나 윗도리의 앞자락이에요. 앞자락이 넓으면 남까지 감싸 안는다고 풀이해서, 남의 일에 참견하는 사람을 '오지랖이 넓다'고 하게 됐어요.",ok:"오지랖",no:"",tag:"속설 가려내기",src:"확정",why:"'오지랖이 넓다'는 쓸데없이 남의 일에 간섭할 때 써요.",tip:"'오지랍'은 틀린 표기예요. 앞자락의 '자락'을 떠올리면 받침 'ㅍ'이 기억나요.",q:"",v:true},
+{id:73,r:"'휘지비지'와 함께 쓰이는 말이에요. 사전은 한자 '諱之祕之(꺼려서 감추고 숨김)'에서 왔다고 풀이해요.",ok:"흐지부지",no:"",tag:"속설 가려내기",src:"확정",why:"끝맺음이 분명하지 않게 슬그머니 흐려지는 모양이에요.",tip:"한자 어원이 확실히 입증된 건 아니라서 통설로 표시해요.",q:"",v:true},
+{id:74,r:"본래 무당이 굿을 맡는 일정한 구역이나 그 집을 뜻하는 '당골'에서 왔다는 설이 널리 받아들여져요. 늘 같은 집을 찾는다는 데서 '늘 정해 놓고 거래하는 사람'이라는 뜻으로 넓어졌다고 봐요. 사전에는 어원이 따로 표시되어 있지 않아요.",ok:"단골",no:"",tag:"속설 가려내기",src:"통설",why:"늘 정해 놓고 거래하는 손님이나 그런 가게를 뜻해요.",tip:"'단골손님'처럼 '단골'은 한 단어로 붙여 써요.",q:"",v:true},
+{id:75,r:"사전은 산스크리트어 Gandharva를 소리 나는 대로 옮긴 불교의 '乾闥婆'에서 '乾達'이 왔다고 풀이해요. 건달바는 하늘에서 음악을 맡는 신이에요. 놀고 즐기는 모습에서 일 없이 빈둥대는 사람을 뜻하게 됐다고 봐요.",ok:"건달",no:"",tag:"속설 가려내기",src:"확정",why:"일정한 직업 없이 빈둥빈둥 노는 사람을 뜻해요.",tip:"'乾闥婆'는 인도 말을 소리 나는 대로 옮겨 적은 한자예요.",q:"",v:true},
+{id:76,r:"중세 국어의 '얼굴'은 지금처럼 낯만이 아니라 '모습, 형체'를 뜻했어요. 뜻이 좁아져 지금은 머리 앞쪽 부분만 가리켜요.",ok:"얼굴",no:"",tag:"속설 가려내기",src:"확정",why:"눈·코·입이 있는 머리의 앞쪽 부분이에요.",tip:"뜻이 좁아진 대표적인 낱말이에요.",q:"",v:true}
+];
+CARDS=CARDS.concat(window.EXTRA||[]);
+var $=function(s){return document.querySelector(s)};
+var app=$('#app');
+var FAMS=['고유어과','한자어과','글자(한자)과','구전·속설과','유사종과'];
+var FDESC=['순우리말이 만들어진 방식','한자로 풀리는 낱말','글자 구성으로 외우기','근거를 따져 보는 말','헷갈리는 쌍 가려내기'];
+var LV={'확정':'확인종','통설':'추정종','속설 주의':'오인 주의'};
+var LVD={'확정':'사전에 근거가 있어요.','통설':'널리 받아들여지지만 단정은 어려워요.','속설 주의':'널리 퍼졌지만 근거가 약해요.'};
+var VER={};(window.VERIFIED||[]).forEach(function(i){VER[i]=1});
+var REFS=window.REFS||{};
+function famOf(c){var t=c.tag;if(t==='우리말 뿌리')return 0;if(t==='한자어 뿌리')return 1;if(t==='한자 풀이')return 2;if(t==='속설 가려내기')return 3;return 4}
+function load(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var got=load('got'),wrong=load('wrong'),introSeen=load('intro').length>0;
+var byId={};
+CARDS.forEach(function(c,i){c.num=i+1;c.fam=famOf(c);byId[c.id]=c});
+function pad(n){return ('000'+n).slice(-3)}
+function isGot(id){return got.indexOf(id)>-1}
+function setGot(id,on){var i=got.indexOf(id);if(on&&i<0)got.push(id);if(!on&&i>-1)got.splice(i,1);save('got',got)}
+function keyOf(c){return c.ok.replace(/^[^가-힣]+\s*/,'')}
+var CH='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ',BASE={'ㄲ':'ㄱ','ㄸ':'ㄷ','ㅃ':'ㅂ','ㅆ':'ㅅ','ㅉ':'ㅈ'};
+function cho(c){var n=keyOf(c).charCodeAt(0);if(n>=0xAC00&&n<=0xD7A3){var x=CH.charAt(Math.floor((n-0xAC00)/588));return BASE[x]||x}return '#'}
+var IX=['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ','ㅋ','ㅌ','ㅍ','ㅎ'];
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+
+function pairHTML(c){
+ if(c.cmp){var p=c.ok.split(' vs ');return '<div class="pair"><span>'+p[0]+'</span><span class="vs">vs</span><span>'+p[1]+'</span></div>'}
+ if(c.no)return '<div class="pair"><span>'+c.ok+'</span><span class="vs">vs</span><span class="no">'+c.no+'</span></div>';
+ return '<div class="pair"><span>'+c.ok+'</span></div>';
+}
+function sec(l,t,mu){return '<div class="sec'+(mu?' mu':'')+'"><span class="lb">'+l+'</span><p>'+t+'</p></div>'}
+function refHTML(c){var r=REFS[c.id];if(!r&&VER[c.id])r='표준국어대사전과 대조했어요';return r?'<div class="ref">근거 · '+r+'</div>':''}
+function pickBtn(c){var g=isGot(c.id);return '<button class="pick'+(g?' on':'')+'" data-act="pick" data-id="'+c.id+'" aria-pressed="'+g+'">'+(g?'채집 완료 · 해제':'표본 채집하기')+'</button>'}
+function endRow(c){return '<div class="endrow">'+(refHTML(c)||'<div></div>')+(isGot(c.id)?'<span class="stamp" aria-label="채집 완료">採</span>':'')+'</div>'}
+function grade(c){return LV[c.src]?'<p class="gd">'+LV[c.src]+' · '+LVD[c.src]+'</p>':''}
+function spec(c){
+ var h='<article class="spec">'+
+ '<div class="label"><span>No. '+pad(c.num)+'</span><span>'+FAMS[c.fam]+'</span>'+(LV[c.src]?'<span class="'+(c.src==='속설 주의'?'w':'')+'">'+LV[c.src]+'</span>':'')+(c.v?'':'<span class="w">확인 필요</span>')+'</div>'+pairHTML(c)+grade(c);
+ if(c.r)h+=sec('기원',c.r);
+ if(c.myth)h+=sec('오인 기록',c.myth,true);
+ if(c.tag!=='한자 풀이')h+=sec(c.r?(c.tag==='맞춤법 뿌리'?'식별법':'생태'):'특징',c.why);
+ return h+'<div class="note"><b>註</b>'+c.tip+'</div>'+endRow(c)+pickBtn(c)+'</article>';
+}
+function entry(c){
+ var h='<article class="entry"><div class="hw">'+c.ok+(c.no?' <small class="no">'+c.no+'</small>':'')+'</div><div class="meta">'+FAMS[c.fam]+(LV[c.src]?' · '+LV[c.src]:'')+'</div>'+grade(c);
+ if(c.r)h+=sec('어원',c.r);
+ if(c.myth)h+=sec('속설',c.myth,true);
+ if(c.tag!=='한자 풀이')h+=sec('뜻',c.why);
+ return h+'<div class="note"><b>한 걸음 더</b>'+c.tip+'</div>'+endRow(c)+pickBtn(c)+'</article>';
+}
+function row(c,act){return '<button class="row" data-act="'+act+'" data-id="'+c.id+'"><span class="n">'+pad(c.num)+'</span><b>'+c.ok+'</b><span class="df">'+(c.no?'vs '+c.no:c.why.slice(0,30))+'</span>'+(isGot(c.id)?'<span class="mk" aria-label="채집됨">採</span>':'')+'</button>'}
+
+var S={tab:'home',view:null,hist:[],q:'',cho:''};
+var Q={pool:null,idx:0,score:0,total:0,done:false};
+function todayCard(){var pool=CARDS.filter(function(c){return !isGot(c.id)});if(!pool.length)pool=CARDS;var d=new Date();return pool[(d.getFullYear()*372+d.getMonth()*31+d.getDate())%pool.length]}
+
+function home(){
+ var t=todayCard(),h='';
+ h+='<h2>오늘의 표본</h2><button class="hero" data-act="spec" data-id="'+t.id+'"><span class="nm">'+t.ok+'</span><span class="df">No. '+pad(t.num)+' · '+FAMS[t.fam]+'</span><span class="go">표본 열어 보기<i class="ti ti-arrow-right" aria-hidden="true"></i></span>'+(isGot(t.id)?'<span class="stamp done" aria-label="채집 완료">採</span>':'')+'</button>';
+ if(!introSeen)h+='<div class="intro"><p>낱말 표본을 열어 뿌리를 읽고 <b>표본 채집하기</b>를 눌러 도감을 채워 보세요. 퀴즈를 맞혀도 채집돼요.</p><button data-act="intro" aria-label="안내 닫기"><i class="ti ti-x" aria-hidden="true"></i></button></div>';
+ h+='<form class="sb" role="search" data-act="hsearch"><i class="ti ti-search" aria-hidden="true"></i><input id="hs" type="search" placeholder="낱말을 찾아보세요" autocomplete="off" aria-label="낱말 검색, 엔터를 누르면 사전으로 이동해요" enterkeyhint="search"></form>';
+ h+='<h2>서가</h2><div class="sh">';
+ FAMS.forEach(function(f,i){var n=0,g=0;CARDS.forEach(function(c){if(c.fam===i){n++;if(isGot(c.id))g++}});h+='<button class="shelf" data-act="shelf" data-v="'+i+'"><b>'+f+'</b><span class="d">'+FDESC[i]+'</span><span class="c">채집 '+g+' / '+n+'</span><span class="mb"><i style="width:'+Math.round(g/n*100)+'%"></i></span></button>'});
+ if(wrong.length)h+='<button class="shelf" data-act="wrong"><b>다시 볼 말</b><span class="d">퀴즈에서 틀린 표본</span><span class="c">'+wrong.length+'개</span></button>';
+ return h+'</div>';
+}
+function shelf(i){
+ var list=CARDS.filter(function(c){return c.fam===i});
+ var g=list.filter(function(c){return isGot(c.id)}).length;
+ return '<h2 class="big">'+FAMS[i]+'</h2><p class="mu" style="margin:0 0 12px;font-size:.9375rem">'+FDESC[i]+' · 채집 '+g+' / '+list.length+'</p>'+list.map(function(c){return row(c,'spec')}).join('');
+}
+function wrongList(){
+ var list=wrong.map(function(id){return byId[id]}).filter(Boolean);
+ return '<h2 class="big">다시 볼 말</h2>'+(list.length?list.map(function(c){return row(c,'spec')}).join(''):'<p class="mu">틀린 표본이 없어요.</p>');
+}
+function dict(){
+ return '<div class="sb"><i class="ti ti-search" aria-hidden="true"></i><input id="ds" type="search" placeholder="낱말 검색 (예: 점잖다)" autocomplete="off" aria-label="낱말 검색" value="'+S.q.replace(/"/g,'&quot;')+'"></div><div class="ix" id="ix" role="group" aria-label="초성으로 찾기"></div><div id="dl"></div>';
+}
+function dictFill(){
+ $('#ix').innerHTML=IX.map(function(x){return '<button data-act="cho" data-v="'+x+'" aria-pressed="'+(S.cho===x)+'" class="'+(S.cho===x?'on':'')+'">'+x+'</button>'}).join('');
+ var q=S.q.trim();
+ var list=CARDS.filter(function(c){return (!q||c.ok.indexOf(q)>-1||(c.no&&c.no.indexOf(q)>-1))&&(!S.cho||cho(c)===S.cho)});
+ list.sort(function(a,b){return keyOf(a).localeCompare(keyOf(b),'ko')});
+ $('#dl').innerHTML='<p class="mu" style="margin:0 0 8px;font-size:.875rem" aria-live="polite">'+list.length+'개 항목</p>'+(list.slice(0,200).map(function(c){return row(c,'entry')}).join('')||'<p class="mu">찾는 말이 아직 없어요.</p>');
+}
+function qok(c){return c.q&&c.v&&c.no}
+function quizView(){
+ if(!Q.pool){var n=CARDS.filter(qok).length;return '<div class="card"><h2 class="big">채집하기</h2><p class="mu" style="margin:0">맞는 말을 고르면 그 표본이 도감에 채집돼요. 한 번에 열 문제를 풀어요.</p><p class="mu" style="font-size:.875rem;margin:8px 0 0">문제 은행 '+n+'개</p><button class="pick" data-act="start">채집 시작</button></div>'}
+ if(Q.idx>=Q.pool.length){
+  return '<div class="card"><h2 class="big">'+Q.score+' / '+Q.total+'</h2><p style="margin:0">'+(Q.score===Q.total?'모든 낱말을 도감에 채집했어요.':'다시 볼 말은 도감 홈의 "다시 볼 말"에 모았어요.')+'</p><button class="pick" data-act="start">다시 채집하기</button></div>';
+ }
+ var c=Q.pool[Q.idx],o=shuffle([c.ok,c.no]);Q.done=false;
+ return '<div class="score"><span>'+(Q.idx+1)+' / '+Q.pool.length+'</span><span id="sc">점수 '+Q.score+'</span></div><div class="card"><span class="lb">문제</span><p class="q">'+c.q.replace('___','<b>＿＿</b>')+'</p><div class="opts">'+o.map(function(t){return '<button data-act="ans" data-t="'+t+'">'+t+'</button>'}).join('')+'</div><div id="res" aria-live="polite"></div></div>';
+}
+function bar(){
+ $('#pt').textContent='채집 '+got.length+' / '+CARDS.length;
+ var p=Math.round(got.length/CARDS.length*100);$('#pp').textContent=p+'%';$('#pb').style.width=Math.max(p,got.length?1:0)+'%';
+}
+function render(){
+ var v=S.view,h;
+ if(v){h='<button class="bk" data-act="back"><i class="ti ti-arrow-left" aria-hidden="true"></i>돌아가기</button>'+(v.type==='spec'?spec(byId[v.id]):v.type==='entry'?entry(byId[v.id]):v.type==='shelf'?shelf(v.v):wrongList())}
+ else h=S.tab==='home'?home():S.tab==='dict'?dict():quizView();
+ app.innerHTML=h;
+ if(!v&&S.tab==='dict')dictFill();
+ var ds=$('#ds');if(ds)ds.oninput=function(){S.q=ds.value;dictFill()};
+ document.querySelectorAll('.tabs button').forEach(function(b){var on=b.dataset.tab===S.tab;b.className=on?'on':'';if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
+ bar();
+}
+function go(v){S.hist.push(S.view);S.view=v;render();window.scrollTo(0,0)}
+function back(){S.view=S.hist.pop()||null;render();window.scrollTo(0,0)}
+function answer(b){
+ if(Q.done)return;Q.done=true;Q.total++;
+ var c=Q.pool[Q.idx],right=b.dataset.t===c.ok;
+ if(right){Q.score++;setGot(c.id,true);wrong=wrong.filter(function(i){return i!==c.id})}else if(wrong.indexOf(c.id)<0){wrong.push(c.id)}
+ save('wrong',wrong);
+ document.querySelectorAll('.opts button').forEach(function(x){if(x.dataset.t===c.ok)x.classList.add('right');else if(x===b)x.classList.add('wrong')});
+ $('#res').innerHTML='<div class="sec"><p>'+(right?'<span class="stamp">採</span><b>채집 완료!</b> 정답이에요':'<span class="stamp bad">再</span><b>다시 살펴봐요.</b> 정답은 '+c.ok)+'</p></div>'+(c.r?sec('기원',c.r):'')+sec('식별법',c.why)+'<div class="note"><b>註</b>'+c.tip+'</div><button class="next" data-act="next">'+(Q.idx+1>=Q.pool.length?'결과 보기':'다음')+'</button>';
+ $('#sc').textContent='점수 '+Q.score;bar();
+}
+document.addEventListener('submit',function(e){
+ var f=e.target.closest('[data-act=hsearch]');if(!f)return;e.preventDefault();
+ S.q=$('#hs').value.trim();S.tab='dict';S.view=null;S.hist=[];render();window.scrollTo(0,0);
+});
+document.addEventListener('click',function(e){
+ var t=e.target.closest('.tabs button');
+ if(t){S.tab=t.dataset.tab;S.view=null;S.hist=[];render();window.scrollTo(0,0);return}
+ var b=e.target.closest('button[data-act]');if(!b)return;
+ var a=b.dataset.act,id=+b.dataset.id,v=b.dataset.v;
+ if(a==='shelf')go({type:'shelf',v:+v});
+ else if(a==='spec')go({type:'spec',id:id});
+ else if(a==='entry')go({type:'entry',id:id});
+ else if(a==='wrong')go({type:'wrong'});
+ else if(a==='back')back();
+ else if(a==='intro'){introSeen=true;save('intro',[1]);render()}
+ else if(a==='pick'){setGot(id,!isGot(id));render()}
+ else if(a==='cho'){S.cho=S.cho===v?'':v;dictFill()}
+ else if(a==='start'){Q={pool:shuffle(CARDS.filter(qok)).slice(0,10),idx:0,score:0,total:0,done:false};render()}
+ else if(a==='ans')answer(b);
+ else if(a==='next'){Q.idx++;render();window.scrollTo(0,0)}
+});
+render();
+})();
+</script>
+</body>
+</html>
