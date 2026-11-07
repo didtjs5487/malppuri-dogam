@@ -102,6 +102,9 @@ h2{margin:0 0 8px;font-size:1rem;font-weight:700}
 .ix::-webkit-scrollbar{display:none}
 .ix button{flex:none;min-width:44px;min-height:44px;border:1px solid var(--edge);background:var(--card);font-size:1rem;font-weight:600}
 .ix button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.vsb{margin-top:8px;padding:10px 12px;border:1px solid var(--line);background:var(--paper);font-size:.9375rem;line-height:1.7;word-break:keep-all}
+.vsb b{margin-right:6px}
+.vsb.best{border-color:var(--ink);border-width:2px}
 .hw{font-family:var(--serif);font-weight:700;font-size:2.25rem;line-height:1.2}
 .hw small{font-family:var(--sans);font-weight:500;font-size:.9375rem}
 .meta{font-size:.875rem;color:var(--mute);margin:2px 0 4px}
@@ -137,6 +140,7 @@ h2{margin:0 0 8px;font-size:1rem;font-weight:700}
 <script src="data/hanja_chars.js"></script>
 <script src="data/spelling.js"></script>
 <script src="data/rules.js"></script>
+<script src="data/places.js"></script>
 <script src="data/verified.js"></script>
 <script>
 (function(){
@@ -222,13 +226,14 @@ var CARDS=[
 CARDS=CARDS.concat(window.EXTRA||[]);
 var $=function(s){return document.querySelector(s)};
 var app=$('#app');
-var FAMS=['고유어과','한자어과','글자(한자)과','구전·속설과','유사종과'];
-var FDESC=['순우리말이 만들어진 방식','한자로 풀리는 낱말','글자 구성으로 외우기','근거를 따져 보는 말','헷갈리는 쌍 가려내기'];
+var FAMS=['고유어과','한자어과','글자(한자)과','구전·속설과','유사종과','지명과'];
+var FDESC=['순우리말이 만들어진 방식','한자로 풀리는 낱말','글자 구성으로 외우기','근거를 따져 보는 말','헷갈리는 쌍 가려내기','동네 이름은 왜 그렇게 붙었을까 · 인천부터'];
 var LV={'확정':'확인종','통설':'추정종','속설 주의':'오인 주의'};
 var LVD={'확정':'사전에 근거가 있어요.','통설':'널리 받아들여지지만 단정은 어려워요.','속설 주의':'널리 퍼졌지만 근거가 약해요.'};
+var LVD5={'확정':'기록으로 확인되는 유래예요.','통설':'여러 설 가운데 더 타당하다고 보는 풀이예요.','속설 주의':'널리 퍼졌지만 근거가 약한 이야기예요.'};
 var VER={};(window.VERIFIED||[]).forEach(function(i){VER[i]=1});
 var REFS=window.REFS||{};
-function famOf(c){var t=c.tag;if(t==='우리말 뿌리')return 0;if(t==='한자어 뿌리')return 1;if(t==='한자 풀이')return 2;if(t==='속설 가려내기')return 3;return 4}
+function famOf(c){var t=c.tag;if(t==='우리말 뿌리')return 0;if(t==='한자어 뿌리')return 1;if(t==='한자 풀이')return 2;if(t==='속설 가려내기')return 3;if(t==='지명')return 5;return 4}
 function load(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 var got=load('got'),wrong=load('wrong'),introSeen=load('intro').length>0;
@@ -253,24 +258,41 @@ function refHTML(c){var r=REFS[c.id];if(!r&&VER[c.id])r='표준국어대사전�
 function pickBtn(c){var g=isGot(c.id);return '<button class="pick'+(g?' on':'')+'" data-act="pick" data-id="'+c.id+'" aria-pressed="'+g+'">'+(g?'채집 완료 · 해제':'표본 채집하기')+'</button>'}
 function endRow(c){return '<div class="endrow">'+(refHTML(c)||'<div></div>')+(isGot(c.id)?'<span class="stamp" aria-label="채집 완료">採</span>':'')+'</div>'}
 function grade(c){return LV[c.src]?'<p class="gd">'+LV[c.src]+' · '+LVD[c.src]+'</p>':''}
+function vsHTML(c){
+ return '<div class="sec"><span class="lb">설이 갈려요</span>'+c.vs.map(function(x){return '<div class="vsb'+(x[2]?' best':'')+'"><b>'+x[0]+'</b> '+x[1]+'</div>'}).join('')+'</div>';
+}
+function spec5(c,isEntry){
+ var h='<article class="'+(isEntry?'entry':'spec')+'">'+
+ '<div class="label"><span>No. '+pad(c.num)+'</span><span>'+FAMS[c.fam]+'</span><span>'+c.place+'</span>'+(LV[c.src]?'<span class="'+(c.src==='속설 주의'?'w':'')+'">'+LV[c.src]+'</span>':'')+'</div>'+
+ pairHTML(c)+(LV[c.src]?'<p class="gd">'+LV[c.src]+' · '+LVD5[c.src]+'</p>':'');
+ if(c.src==='속설 주의'&&c.myth)h+=sec('많이 하는 오해',c.myth,true);
+ if(c.r)h+=sec('뿌리',c.r);
+ if(c.src!=='속설 주의'&&c.myth)h+=sec('많이 하는 오해',c.myth,true);
+ if(c.vs)h+=vsHTML(c);
+ if(c.why)h+=sec('뜻',c.why);
+ if(c.tip)h+='<div class="note"><b>註</b>'+c.tip+'</div>';
+ return h+endRow(c)+pickBtn(c)+'</article>';
+}
 function spec(c){
+ if(c.fam===5)return spec5(c,false);
  var h='<article class="spec">'+
  '<div class="label"><span>No. '+pad(c.num)+'</span><span>'+FAMS[c.fam]+'</span>'+(LV[c.src]?'<span class="'+(c.src==='속설 주의'?'w':'')+'">'+LV[c.src]+'</span>':'')+(c.v?'':'<span class="w">확인 필요</span>')+'</div>'+pairHTML(c)+grade(c);
  if(c.r)h+=sec('기원',c.r);
- if(c.myth)h+=sec('오인 기록',c.myth,true);
+ if(c.myth)h+=sec('많이 하는 오해',c.myth,true);
  if(c.tag!=='한자 풀이')h+=sec(c.r?(c.tag==='맞춤법 뿌리'?'식별법':'생태'):'특징',c.why);
  return h+'<div class="note"><b>註</b>'+c.tip+'</div>'+endRow(c)+pickBtn(c)+'</article>';
 }
 function entry(c){
+ if(c.fam===5)return spec5(c,true);
  var h='<article class="entry"><div class="hw">'+c.ok+(c.no?' <small class="no">'+c.no+'</small>':'')+'</div><div class="meta">'+FAMS[c.fam]+(LV[c.src]?' · '+LV[c.src]:'')+'</div>'+grade(c);
  if(c.r)h+=sec('어원',c.r);
- if(c.myth)h+=sec('속설',c.myth,true);
+ if(c.myth)h+=sec('많이 하는 오해',c.myth,true);
  if(c.tag!=='한자 풀이')h+=sec('뜻',c.why);
  return h+'<div class="note"><b>한 걸음 더</b>'+c.tip+'</div>'+endRow(c)+pickBtn(c)+'</article>';
 }
-function row(c,act){return '<button class="row" data-act="'+act+'" data-id="'+c.id+'"><span class="n">'+pad(c.num)+'</span><b>'+c.ok+'</b><span class="df">'+(c.no?'vs '+c.no:c.why.slice(0,30))+'</span>'+(isGot(c.id)?'<span class="mk" aria-label="채집됨">採</span>':'')+'</button>'}
+function row(c,act){return '<button class="row" data-act="'+act+'" data-id="'+c.id+'"><span class="n">'+pad(c.num)+'</span><b>'+c.ok+'</b><span class="df">'+(c.fam===5?c.place+' · '+c.src:(c.no?'vs '+c.no:c.why.slice(0,30)))+'</span>'+(isGot(c.id)?'<span class="mk" aria-label="채집됨">採</span>':'')+'</button>'}
 
-var S={tab:'home',view:null,hist:[],q:'',cho:''};
+var S={tab:'home',view:null,hist:[],q:'',cho:'',sf:''};
 var Q={pool:null,idx:0,score:0,total:0,done:false};
 function todayCard(){var pool=CARDS.filter(function(c){return !isGot(c.id)});if(!pool.length)pool=CARDS;var d=new Date();return pool[(d.getFullYear()*372+d.getMonth()*31+d.getDate())%pool.length]}
 
@@ -287,7 +309,13 @@ function home(){
 function shelf(i){
  var list=CARDS.filter(function(c){return c.fam===i});
  var g=list.filter(function(c){return isGot(c.id)}).length;
- return '<h2 class="big">'+FAMS[i]+'</h2><p class="mu" style="margin:0 0 12px;font-size:.9375rem">'+FDESC[i]+' · 채집 '+g+' / '+list.length+'</p>'+list.map(function(c){return row(c,'spec')}).join('');
+ var chips='';
+ if(i===5){
+  var cnt={};list.forEach(function(c){cnt[c.src]=(cnt[c.src]||0)+1});
+  chips='<div class="ix" role="group" aria-label="등급으로 거르기">'+[['','전체 '+list.length],['확정','확정 '+(cnt['확정']||0)],['통설','통설 '+(cnt['통설']||0)],['속설 주의','속설 주의 '+(cnt['속설 주의']||0)]].map(function(x){return '<button data-act="sf" data-v="'+x[0]+'" aria-pressed="'+(S.sf===x[0])+'" class="'+(S.sf===x[0]?'on':'')+'" style="padding:0 14px">'+x[1]+'</button>'}).join('')+'</div>';
+  if(S.sf)list=list.filter(function(c){return c.src===S.sf});
+ }
+ return '<h2 class="big">'+FAMS[i]+'</h2><p class="mu" style="margin:0 0 12px;font-size:.9375rem">'+FDESC[i]+' · 채집 '+g+' / '+CARDS.filter(function(c){return c.fam===i}).length+'</p>'+chips+list.map(function(c){return row(c,'spec')}).join('');
 }
 function wrongList(){
  var list=wrong.map(function(id){return byId[id]}).filter(Boolean);
@@ -354,6 +382,7 @@ document.addEventListener('click',function(e){
  else if(a==='intro'){introSeen=true;save('intro',[1]);render()}
  else if(a==='pick'){setGot(id,!isGot(id));render()}
  else if(a==='cho'){S.cho=S.cho===v?'':v;dictFill()}
+ else if(a==='sf'){S.sf=v;render()}
  else if(a==='start'){Q={pool:shuffle(CARDS.filter(qok)).slice(0,10),idx:0,score:0,total:0,done:false};render()}
  else if(a==='ans')answer(b);
  else if(a==='next'){Q.idx++;render();window.scrollTo(0,0)}
