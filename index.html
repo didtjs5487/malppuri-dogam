@@ -103,6 +103,12 @@ h2{margin:0 0 8px;font-size:1rem;font-weight:700}
 .ix button{flex:none;min-width:44px;min-height:44px;border:1px solid var(--edge);background:var(--card);font-size:1rem;font-weight:600}
 .ix button.on{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .pick.alt{background:transparent;color:var(--ink)}
+.linkbtn{display:flex;align-items:center;justify-content:center;text-decoration:none;text-align:center}
+.filebtn{display:flex;align-items:center;justify-content:center;cursor:pointer}
+.nbtns{display:flex;gap:10px}.nbtns .pick{flex:1}
+.nf label{display:block;font-weight:700;font-size:.9375rem;margin:16px 0 4px}
+.nf input,.nf select,.nf textarea{width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--edge);background:var(--card);color:var(--ink);font-size:1rem;font-family:inherit;border-radius:0}
+.nf textarea{min-height:128px;line-height:1.7;resize:vertical}
 .opts.v{flex-direction:column}
 .opts.v button{min-height:64px;text-align:left;padding:12px 14px;font-family:var(--sans);font-weight:600;font-size:1rem;line-height:1.6;word-break:keep-all}
 .map{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
@@ -153,6 +159,7 @@ h2{margin:0 0 8px;font-size:1rem;font-weight:700}
 <script src="data/spelling.js"></script>
 <script src="data/rules.js"></script>
 <script src="data/places.js"></script>
+<script src="data/places2.js"></script>
 <script src="data/verified.js"></script>
 <script>
 (function(){
@@ -315,6 +322,7 @@ function home(){
  h+='<form class="sb" role="search" data-act="hsearch"><i class="ti ti-search" aria-hidden="true"></i><input id="hs" type="search" placeholder="낱말을 찾아보세요" autocomplete="off" aria-label="낱말 검색, 엔터를 누르면 사전으로 이동해요" enterkeyhint="search"></form>';
  h+='<h2>서가</h2><div class="sh">';
  FAMS.forEach(function(f,i){var n=0,g=0;CARDS.forEach(function(c){if(c.fam===i){n++;if(isGot(c.id))g++}});h+='<button class="shelf" data-act="shelf" data-v="'+i+'"><b>'+f+'</b><span class="d">'+FDESC[i]+'</span><span class="c">채집 '+g+' / '+n+'</span><span class="mb"><i style="width:'+Math.round(g/n*100)+'%"></i></span></button>'});
+ h+='<button class="shelf" data-act="notes"><b>내 노트</b><span class="d">내가 직접 찾은 말 · 미확인</span><span class="c">노트 '+notes.length+'개</span></button>';
  if(wrong.length)h+='<button class="shelf" data-act="wrong"><b>다시 볼 말</b><span class="d">퀴즈에서 틀린 표본</span><span class="c">'+wrong.length+'개</span></button>';
  return h+'</div>';
 }
@@ -346,6 +354,74 @@ function guList(n){
  var g=list.filter(function(c){return isGot(c.id)}).length;
  return '<h2 class="big">'+n+'</h2><p class="mu" style="margin:0 0 12px;font-size:.9375rem">'+(list.length?'지명 표본 · 채집 '+g+' / '+list.length:'아직 표본을 준비 중이에요.')+'</p>'+list.map(function(c){return row(c,'spec')}).join('');
 }
+/* ── 내 노트: 내가 직접 찾은 말 (기기에만 저장, 모두 '미확인') ── */
+var notes=load('notes').filter(function(n){return n&&typeof n.ok==='string'&&typeof n.r==='string'});
+var DICT_URL='https://stdict.korean.go.kr/search/searchResult.do?pageSize=10&searchKeyword=';
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(m){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]})}
+function nl2br(s){return esc(s).replace(/\n/g,'<br>')}
+function saveNotes(){save('notes',notes)}
+function noteBy(id){return notes.filter(function(n){return n.id===id})[0]}
+function today(){var d=new Date();return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2)}
+function noteRow(n){return '<button class="row" data-act="note" data-sid="'+esc(n.id)+'"><b>'+esc(n.ok)+'</b><span class="df">'+(n.kind==='place'?'지명':'낱말')+' · '+(n.chk?'내가 대조함':'미확인')+'</span></button>'}
+function notesView(){
+ return '<h2 class="big">내 노트</h2><p class="mu" style="margin:0 0 12px;font-size:.9375rem">내가 직접 찾은 낱말과 지명을 적어 두는 곳이에요. 도감의 사전 대조와 달라서 모두 미확인으로 표시돼요. 이 기기에만 저장돼요.</p>'+
+ '<button class="pick" data-act="nnew" style="margin-top:0"><i class="ti ti-pencil-plus" aria-hidden="true"></i> 새 낱말 채집해 적기</button>'+
+ '<div style="margin-top:14px">'+(notes.length?notes.map(noteRow).join(''):'<p class="mu">아직 적은 노트가 없어요.</p>')+'</div>'+
+ '<div class="nbtns"><button class="pick alt" data-act="nexp">파일로 내보내기</button><label class="pick alt filebtn" for="nimp">가져오기</label><input type="file" id="nimp" accept="application/json,.json" hidden></div>'+
+ '<p class="mu" id="nmsg" aria-live="polite" style="font-size:.875rem;margin:8px 0 0">브라우저 데이터를 지우거나 기기를 바꾸면 사라지니, 가끔 파일로 내보내 두세요.</p>';
+}
+function noteForm(n){
+ n=n||{};
+ return '<h2 class="big">'+(n.id?'노트 고치기':'새 낱말 채집해 적기')+'</h2><form class="nf" data-act="nsave" data-sid="'+esc(n.id||'')+'">'+
+ '<label for="nk">종류</label><select id="nk"><option value="word">낱말</option><option value="place">지명</option></select>'+
+ '<label for="nw">낱말 또는 지명</label><input id="nw" required maxlength="40" autocomplete="off" value="'+esc(n.ok||'')+'">'+
+ '<label for="nr">내가 찾은 뿌리</label><textarea id="nr" required maxlength="600" rows="5">'+esc(n.r||'')+'</textarea>'+
+ '<label for="ns">어디서 봤나요 <span class="mu" style="font-weight:500">(선택)</span></label><input id="ns" maxlength="80" autocomplete="off" placeholder="책, 영상, 사전 이름 등" value="'+esc(n.s||'')+'">'+
+ '<div class="note"><b>알림</b>내 노트는 사전으로 확인된 내용이 아니에요. 저장한 뒤 직접 찾아보고 "내가 대조함"으로 표시할 수 있어요.</div>'+
+ '<button class="pick" type="submit">저장하기</button></form>';
+}
+function noteView(n){
+ var link=n.kind==='place'?'<a class="pick alt linkbtn" href="https://www.incheon.go.kr/IC040312" target="_blank" rel="noopener">인천시 지명유래에서 찾아보기</a>':'<a class="pick alt linkbtn" href="'+DICT_URL+encodeURIComponent(n.ok)+'" target="_blank" rel="noopener">표준국어대사전에서 찾아보기</a>';
+ return '<article class="spec"><div class="label"><span>내 노트</span><span class="w">'+(n.chk?'내가 대조함':'미확인')+'</span><span>'+(n.kind==='place'?'지명':'낱말')+'</span></div>'+
+ '<div class="pair"><span>'+esc(n.ok)+'</span></div><p class="gd">내가 채집함 · '+esc(n.d||'')+'</p>'+
+ sec('내가 찾은 뿌리',nl2br(n.r))+(n.s?sec('출처',esc(n.s)):'')+
+ '<div class="note"><b>알림</b>사전으로 확인된 내용이 아니에요. 도감의 확인종·추정종 표시와는 달라요.</div>'+
+ link+
+ '<button class="pick alt" data-act="nchk" data-sid="'+esc(n.id)+'">'+(n.chk?'내가 대조함 표시 해제':'내가 대조함으로 표시')+'</button>'+
+ '<div class="nbtns"><button class="pick alt" data-act="nedit" data-sid="'+esc(n.id)+'">고치기</button><button class="pick alt" data-act="ndel" data-sid="'+esc(n.id)+'">지우기</button></div></article>';
+}
+function saveNote(sid){
+ var w=$('#nw').value.trim(),r=$('#nr').value.trim(),s=$('#ns').value.trim(),k=$('#nk').value==='place'?'place':'word';
+ if(!w||!r)return;
+ var n=sid?noteBy(sid):null;
+ if(n){n.ok=w;n.r=r;n.s=s;n.kind=k}
+ else{n={id:'n'+Date.now(),ok:w,r:r,s:s,kind:k,chk:false,d:today()};notes.unshift(n)}
+ saveNotes();if(sid)S.hist.pop();S.view={type:'note',id:n.id};render();window.scrollTo(0,0);
+}
+function exportNotes(){
+ var blob=new Blob([JSON.stringify({app:'말뿌리 도감',v:1,notes:notes},null,1)],{type:'application/json'});
+ var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='말뿌리도감-내노트.json';
+ document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(a.href)},1000);
+ var m=$('#nmsg');if(m)m.textContent='파일로 내보냈어요.';
+}
+function importNotes(file){
+ var m=$('#nmsg');if(!file)return;
+ var rd=new FileReader();
+ rd.onload=function(){
+  try{
+   var j=JSON.parse(rd.result),arr=Array.isArray(j)?j:j.notes,add=0;
+   if(!Array.isArray(arr))throw 0;
+   arr.forEach(function(x){
+    if(!x||typeof x.ok!=='string'||typeof x.r!=='string')return;
+    var id=typeof x.id==='string'&&/^n\d+$/.test(x.id)?x.id:'n'+Date.now()+add;
+    if(noteBy(id))return;
+    notes.push({id:id,ok:x.ok.slice(0,40),r:x.r.slice(0,600),s:String(x.s||'').slice(0,80),kind:x.kind==='place'?'place':'word',chk:!!x.chk,d:String(x.d||today()).slice(0,10)});add++;
+   });
+   saveNotes();render();var mm=$('#nmsg');if(mm)mm.textContent=add+'개를 가져왔어요.';
+  }catch(e){if(m)m.textContent='가져오지 못했어요. 이 앱에서 내보낸 파일인지 확인해 주세요.'}
+ };
+ rd.readAsText(file);
+}
 function wrongList(){
  var list=wrong.map(function(id){return byId[id]}).filter(Boolean);
  return '<h2 class="big">다시 볼 말</h2>'+(list.length?list.map(function(c){return row(c,'spec')}).join(''):'<p class="mu">틀린 표본이 없어요.</p>');
@@ -358,7 +434,8 @@ function dictFill(){
  var q=S.q.trim();
  var list=CARDS.filter(function(c){return (!q||c.ok.indexOf(q)>-1||(c.no&&c.no.indexOf(q)>-1))&&(!S.cho||cho(c)===S.cho)});
  list.sort(function(a,b){return keyOf(a).localeCompare(keyOf(b),'ko')});
- $('#dl').innerHTML='<p class="mu" style="margin:0 0 8px;font-size:.875rem" aria-live="polite">'+list.length+'개 항목</p>'+(list.slice(0,200).map(function(c){return row(c,'entry')}).join('')||'<p class="mu">찾는 말이 아직 없어요.</p>');
+ var mine=q?notes.filter(function(n){return n.ok.indexOf(q)>-1}):[];
+ $('#dl').innerHTML=(mine.length?'<p class="mu" style="margin:0 0 8px;font-size:.875rem">내 노트 '+mine.length+'개</p>'+mine.map(noteRow).join('')+'<div style="height:12px"></div>':'')+'<p class="mu" style="margin:0 0 8px;font-size:.875rem" aria-live="polite">'+list.length+'개 항목</p>'+(list.slice(0,200).map(function(c){return row(c,'entry')}).join('')||'<p class="mu">찾는 말이 아직 없어요.</p>');
 }
 function qok(c){return c.q&&c.v&&c.no}
 function quizView(){
@@ -379,9 +456,11 @@ function bar(){
 }
 function render(){
  var v=S.view,h;
- if(v){h='<button class="bk" data-act="back"><i class="ti ti-arrow-left" aria-hidden="true"></i>돌아가기</button>'+(v.type==='spec'?spec(byId[v.id]):v.type==='entry'?entry(byId[v.id]):v.type==='shelf'?shelf(v.v):v.type==='gu'?guList(v.v):wrongList())}
+ if(v){h='<button class="bk" data-act="back"><i class="ti ti-arrow-left" aria-hidden="true"></i>돌아가기</button>'+(v.type==='spec'?spec(byId[v.id]):v.type==='entry'?entry(byId[v.id]):v.type==='shelf'?shelf(v.v):v.type==='gu'?guList(v.v):v.type==='notes'?notesView():v.type==='noteform'?noteForm(noteBy(v.sid)):v.type==='note'?(noteBy(v.sid||v.id)?noteView(noteBy(v.sid||v.id)):'<p class="mu">노트를 찾을 수 없어요.</p>'):wrongList())}
  else h=S.tab==='home'?home():S.tab==='dict'?dict():S.tab==='map'?mapView():quizView();
  app.innerHTML=h;
+ if(v&&v.type==='noteform'){var nk=$('#nk'),en=noteBy(v.sid);if(nk)nk.value=en&&en.kind==='place'?'place':'word'}
+ var ni=$('#nimp');if(ni)ni.onchange=function(){importNotes(ni.files[0]);ni.value=''};
  if(!v&&S.tab==='dict')dictFill();
  var ds=$('#ds');if(ds)ds.oninput=function(){S.q=ds.value;dictFill()};
  document.querySelectorAll('.tabs button').forEach(function(b){var on=b.dataset.tab===S.tab;b.className=on?'on':'';if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
@@ -408,6 +487,8 @@ function answerP(b){
  $('#sc').textContent='점수 '+Q.score;bar();
 }
 document.addEventListener('submit',function(e){
+ var nf=e.target.closest('[data-act=nsave]');
+ if(nf){e.preventDefault();saveNote(nf.dataset.sid);return}
  var f=e.target.closest('[data-act=hsearch]');if(!f)return;e.preventDefault();
  S.q=$('#hs').value.trim();S.tab='dict';S.view=null;S.hist=[];render();window.scrollTo(0,0);
 });
@@ -430,6 +511,16 @@ document.addEventListener('click',function(e){
  else if(a==='qhome'){Q={pool:null,idx:0,score:0,total:0,done:false};render()}
  else if(a==='ansp')answerP(b);
  else if(a==='gu')go({type:'gu',v:v});
+ else if(a==='notes')go({type:'notes'});
+ else if(a==='nnew')go({type:'noteform',sid:''});
+ else if(a==='note')go({type:'note',sid:b.dataset.sid});
+ else if(a==='nedit')go({type:'noteform',sid:b.dataset.sid});
+ else if(a==='nexp')exportNotes();
+ else if(a==='nchk'){var cn=noteBy(b.dataset.sid);if(cn){cn.chk=!cn.chk;saveNotes();render()}}
+ else if(a==='ndel'){
+  if(b.dataset.armed){notes=notes.filter(function(n){return n.id!==b.dataset.sid});saveNotes();back()}
+  else{b.dataset.armed='1';b.textContent='한 번 더 누르면 지워져요';setTimeout(function(){if(b.isConnected){delete b.dataset.armed;b.textContent='지우기'}},3000)}
+ }
  else if(a==='ans')answer(b);
  else if(a==='next'){Q.idx++;render();window.scrollTo(0,0)}
 });
