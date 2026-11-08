@@ -22,3 +22,9 @@
 ## 실행
 
 서버 없이 `index.html`을 열면 돼요. 글꼴과 아이콘은 인터넷에서 받아 와요. 내 노트와 채집 기록은 이 기기의 브라우저에만 저장돼요.
+
+## 배포
+
+GitHub Pages로 올려요: https://didtjs5487.github.io/malppuri-dogam/
+
+`main`에 올리면 1~2분 안에 바뀌어요. `data/_h.js`처럼 밑줄로 시작하는 파일이 빠지지 않도록 `.nojekyll` 파일을 두었으니 지우지 마세요.
