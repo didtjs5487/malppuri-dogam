@@ -161,6 +161,7 @@ h2{margin:0 0 8px;font-size:1rem;font-weight:700}
 <script src="data/places.js"></script>
 <script src="data/places2.js"></script>
 <script src="data/places3.js"></script>
+<script src="data/places4.js"></script>
 <script src="data/verified.js"></script>
 <script>
 (function(){
@@ -441,6 +442,8 @@ function dictFill(){
 }
 function qok(c){return c.q&&c.v&&c.no}
 function quizView(){
+ /* 답을 본 뒤 다른 탭에 갔다 돌아오면 같은 문제를 다시 풀지 않고 다음 문제로 넘어가요 */
+ if(Q.pool&&Q.done&&Q.idx<Q.pool.length){Q.idx++;Q.done=false}
  if(!Q.pool){var n=CARDS.filter(qok).length,np=CARDS.filter(function(c){return c.pq}).length;return '<div class="card"><h2 class="big">채집하기</h2><p class="mu" style="margin:0">맞는 답을 고르면 그 표본이 도감에 채집돼요. 한 번에 열 문제를 풀어요.</p><button class="pick" data-act="start">맞는 말 고르기 <span style="font-weight:500">· 문제 '+n+'개</span></button><button class="pick alt" data-act="startp">지명 풀이 고르기 <span style="font-weight:500">· 문제 '+np+'개</span></button></div>'}
  if(Q.idx>=Q.pool.length){
   return '<div class="card"><h2 class="big">'+Q.score+' / '+Q.total+'</h2><p style="margin:0">'+(Q.score===Q.total?'모든 표본을 도감에 채집했어요.':'다시 볼 말은 도감 홈의 "다시 볼 말"에 모았어요.')+'</p><button class="pick" data-act="'+(Q.mode==='p'?'startp':'start')+'">다시 채집하기</button><button class="pick alt" data-act="qhome">다른 문제 고르기</button></div>';
@@ -524,7 +527,7 @@ document.addEventListener('click',function(e){
   else{b.dataset.armed='1';b.textContent='한 번 더 누르면 지워져요';setTimeout(function(){if(b.isConnected){delete b.dataset.armed;b.textContent='지우기'}},3000)}
  }
  else if(a==='ans')answer(b);
- else if(a==='next'){Q.idx++;render();window.scrollTo(0,0)}
+ else if(a==='next'){Q.idx++;Q.done=false;render();window.scrollTo(0,0)}
 });
 render();
 })();
