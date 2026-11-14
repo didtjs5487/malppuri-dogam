@@ -63,7 +63,8 @@ h2{margin:0 0 8px;font-size:1rem;font-weight:700}
 .shelf .c{font-size:.875rem;font-weight:600;margin-top:auto;padding-top:8px}
 .mb{display:block;height:4px;background:var(--line);margin-top:4px}
 .mb i{display:block;height:100%;background:var(--fill-bad)}
-.bk{background:none;border:0;color:var(--mute);font-size:.9375rem;min-height:44px;padding:0 8px 0 0;display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.bk{position:sticky;top:0;z-index:4;width:100%;background:var(--paper);border:0;border-bottom:1px solid var(--line);color:var(--ink);font-weight:700;font-size:1rem;min-height:48px;padding:0 8px 0 0;display:flex;align-items:center;gap:6px;margin:0;text-align:left}
+.bk+*{margin-top:12px}
 .spec,.entry,.card{background:var(--card);border:1px solid var(--ink);padding:20px 18px;position:relative}
 .label{display:flex;flex-wrap:wrap;gap:6px;font-size:.8125rem;margin-bottom:6px}
 .label span{border:1px solid var(--mute);color:var(--mute);padding:1px 8px}
@@ -315,7 +316,7 @@ function entry(c){
 }
 function row(c,act){return '<button class="row" data-act="'+act+'" data-id="'+c.id+'"><span class="n">'+pad(c.num)+'</span><b>'+c.ok+'</b><span class="df">'+(c.fam===5?c.place+' · '+c.src:(c.no?'vs '+c.no:c.why.slice(0,30)))+'</span>'+(isGot(c.id)?'<span class="mk" aria-label="채집됨">採</span>':'')+'</button>'}
 
-var S={tab:'home',view:null,hist:[],q:'',cho:'',sf:''};
+var S={tab:'home',view:null,hist:[],hy:[],q:'',cho:'',sf:''};
 var Q={pool:null,idx:0,score:0,total:0,done:false};
 function todayCard(){var pool=CARDS.filter(function(c){return !isGot(c.id)});if(!pool.length)pool=CARDS;var d=new Date();return pool[(d.getFullYear()*372+d.getMonth()*31+d.getDate())%pool.length]}
 
@@ -401,7 +402,7 @@ function saveNote(sid){
  var n=sid?noteBy(sid):null;
  if(n){n.ok=w;n.r=r;n.s=s;n.kind=k}
  else{n={id:'n'+Date.now(),ok:w,r:r,s:s,kind:k,chk:false,d:today()};notes.unshift(n)}
- saveNotes();if(sid)S.hist.pop();S.view={type:'note',id:n.id};render();window.scrollTo(0,0);
+ saveNotes();if(sid){S.hist.pop();S.hy.pop()}S.view={type:'note',id:n.id};render();window.scrollTo(0,0);
 }
 function exportNotes(){
  var blob=new Blob([JSON.stringify({app:'말뿌리 도감',v:1,notes:notes},null,1)],{type:'application/json'});
@@ -473,8 +474,16 @@ function render(){
  document.querySelectorAll('.tabs button').forEach(function(b){var on=b.dataset.tab===S.tab;b.className=on?'on':'';if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  bar();
 }
-function go(v){S.hist.push(S.view);S.view=v;render();window.scrollTo(0,0)}
-function back(){S.view=S.hist.pop()||null;render();window.scrollTo(0,0)}
+// 화면 이동: 카드·목록에 들어가면 브라우저 기록에 칸 하나를 더해 두어, 폰의 뒤로 가기 동작도 앱 안의 이전 화면으로 돌아가게 해요.
+var GUARD=false,SKIP=0;
+try{history.scrollRestoration='manual'}catch(e){}
+function arm(){if(GUARD)return;try{history.pushState({mp:1},'');GUARD=true}catch(e){}}
+function disarm(){if(!GUARD)return;GUARD=false;SKIP++;try{history.back()}catch(e){SKIP--}setTimeout(function(){SKIP=0},600)}
+function go(v){S.hist.push(S.view);S.hy.push(window.scrollY||0);S.view=v;arm();render();window.scrollTo(0,0)}
+function back(){var y=S.hy.pop()||0;S.view=S.hist.pop()||null;render();window.scrollTo(0,y)}
+function backBtn(){if(GUARD){try{history.back();return}catch(e){}}back()}
+function resetNav(){S.view=null;S.hist=[];S.hy=[];disarm()}
+window.addEventListener('popstate',function(){if(SKIP>0){SKIP--;return}GUARD=false;if(S.view){back();if(S.view)arm()}});
 function answer(b){
  if(Q.done)return;Q.done=true;Q.total++;
  var c=Q.pool[Q.idx],right=b.dataset.t===c.ok;
@@ -497,18 +506,18 @@ document.addEventListener('submit',function(e){
  var nf=e.target.closest('[data-act=nsave]');
  if(nf){e.preventDefault();saveNote(nf.dataset.sid);return}
  var f=e.target.closest('[data-act=hsearch]');if(!f)return;e.preventDefault();
- S.q=$('#hs').value.trim();S.tab='dict';S.view=null;S.hist=[];render();window.scrollTo(0,0);
+ S.q=$('#hs').value.trim();S.tab='dict';resetNav();render();window.scrollTo(0,0);
 });
 document.addEventListener('click',function(e){
  var t=e.target.closest('.tabs button');
- if(t){S.tab=t.dataset.tab;S.view=null;S.hist=[];render();window.scrollTo(0,0);return}
+ if(t){S.tab=t.dataset.tab;resetNav();render();window.scrollTo(0,0);return}
  var b=e.target.closest('button[data-act]');if(!b)return;
  var a=b.dataset.act,id=+b.dataset.id,v=b.dataset.v;
  if(a==='shelf')go({type:'shelf',v:+v});
  else if(a==='spec')go({type:'spec',id:id});
  else if(a==='entry')go({type:'entry',id:id});
  else if(a==='wrong')go({type:'wrong'});
- else if(a==='back')back();
+ else if(a==='back')backBtn();
  else if(a==='intro'){introSeen=true;save('intro',[1]);render()}
  else if(a==='pick'){setGot(id,!isGot(id));render()}
  else if(a==='cho'){S.cho=S.cho===v?'':v;dictFill()}
@@ -525,7 +534,7 @@ document.addEventListener('click',function(e){
  else if(a==='nexp')exportNotes();
  else if(a==='nchk'){var cn=noteBy(b.dataset.sid);if(cn){cn.chk=!cn.chk;saveNotes();render()}}
  else if(a==='ndel'){
-  if(b.dataset.armed){notes=notes.filter(function(n){return n.id!==b.dataset.sid});saveNotes();back()}
+  if(b.dataset.armed){notes=notes.filter(function(n){return n.id!==b.dataset.sid});saveNotes();backBtn()}
   else{b.dataset.armed='1';b.textContent='한 번 더 누르면 지워져요';setTimeout(function(){if(b.isConnected){delete b.dataset.armed;b.textContent='지우기'}},3000)}
  }
  else if(a==='ans')answer(b);
