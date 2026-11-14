@@ -7,7 +7,7 @@
 - `index.html`: 화면과 동작 (도감 · 사전 · 지도 · 채집하기, 내 노트)
 - `data/`: 카드 데이터 (분야별 파일)
   - `roots.js`, `hanja_words.js`, `myths.js`, `hanja_chars.js`, `spelling.js`, `rules.js`: 낱말 카드
-  - `places.js` ~ `places4.js`: 인천 지명 카드 (지명과)
+  - `places.js` ~ `places5.js`: 인천 지명 카드 (지명과)
   - `verified.js`, `refs2.js`: 표준국어대사전·한글 맞춤법과 대조한 목록과 근거 문구
 - `icons/`, `manifest.webmanifest`: 앱 아이콘과 홈 화면 설정
 
