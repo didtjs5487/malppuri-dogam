@@ -65,6 +65,11 @@ h2{margin:0 0 8px;font-size:1rem;font-weight:700}
 .mb i{display:block;height:100%;background:var(--fill-bad)}
 .bk{position:sticky;top:0;z-index:4;width:100%;background:var(--paper);border:0;border-bottom:1px solid var(--line);color:var(--ink);font-weight:700;font-size:1rem;min-height:48px;padding:0 8px 0 0;display:flex;align-items:center;gap:6px;margin:0;text-align:left}
 .bk+*{margin-top:12px}
+.ph{margin:14px 0 4px}
+.ph img{display:block;width:100%;height:auto;max-height:68vh;object-fit:contain;background:var(--paper);border:1px solid var(--line)}
+.ph figcaption{font-size:.75rem;line-height:1.55;color:var(--mute);margin-top:6px}
+.ph figcaption b{color:var(--ink);font-weight:600}
+.ph a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 .spec,.entry,.card{background:var(--card);border:1px solid var(--ink);padding:20px 18px;position:relative}
 .label{display:flex;flex-wrap:wrap;gap:6px;font-size:.8125rem;margin-bottom:6px}
 .label span{border:1px solid var(--mute);color:var(--mute);padding:1px 8px}
@@ -165,6 +170,7 @@ h2{margin:0 0 8px;font-size:1rem;font-weight:700}
 <script src="data/places3.js"></script>
 <script src="data/places4.js"></script>
 <script src="data/places5.js"></script>
+<script src="data/photos.js"></script>
 <script src="data/verified.js"></script>
 <script>
 (function(){
@@ -257,6 +263,7 @@ var LVD={'확정':'사전에 근거가 있어요.','통설':'널리 받아들여
 var LVD5={'확정':'기록으로 확인되는 유래예요.','통설':'여러 설 가운데 더 타당하다고 보는 풀이예요.','속설 주의':'널리 퍼졌지만 근거가 약한 이야기예요.'};
 var VER={};(window.VERIFIED||[]).forEach(function(i){VER[i]=1});
 var REFS=window.REFS||{};
+var PHOTOS=window.PHOTOS||{};
 function famOf(c){var t=c.tag;if(t==='우리말 뿌리')return 0;if(t==='한자어 뿌리')return 1;if(t==='한자 풀이')return 2;if(t==='속설 가려내기')return 3;if(t==='지명')return 5;return 4}
 function load(k){try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
@@ -285,10 +292,17 @@ function grade(c){return LV[c.src]?'<p class="gd">'+LV[c.src]+' · '+LVD[c.src]+
 function vsHTML(c){
  return '<div class="sec"><span class="lb">설이 갈려요</span>'+c.vs.map(function(x){return '<div class="vsb'+(x[2]?' best':'')+'"><b>'+x[0]+'</b> '+x[1]+'</div>'}).join('')+'</div>';
 }
+function phHTML(c){
+ var p=PHOTOS[c.id];if(!p)return '';
+ var cr;
+ if(p.sn)cr='출처: <a href="'+p.su+'" target="_blank" rel="noopener">'+p.sn+'</a> · <a href="'+p.lu+'" target="_blank" rel="noopener">'+p.lic+'</a>('+p.lt+')';
+ else cr='사진: '+esc(p.by)+' · '+(p.lu?'<a href="'+p.lu+'" target="_blank" rel="noopener">'+p.lic+'</a>':p.lic)+' · <a href="'+p.su+'" target="_blank" rel="noopener">위키미디어 커먼스</a>'+(p.mod?' · 크기를 줄여 실었어요':'');
+ return '<figure class="ph"><img src="'+p.f+'" width="'+p.w+'" height="'+p.h+'" alt="'+esc(p.alt)+'" decoding="async" onerror="this.closest(\'figure\').style.display=\'none\'"><figcaption><b>'+esc(p.cap)+'</b><br>'+cr+'</figcaption></figure>'
+}
 function spec5(c,isEntry){
  var h='<article class="'+(isEntry?'entry':'spec')+'">'+
  '<div class="label"><span>No. '+pad(c.num)+'</span><span>'+FAMS[c.fam]+'</span><span>'+c.place+'</span>'+(LV[c.src]?'<span class="'+(c.src==='속설 주의'?'w':'')+'">'+LV[c.src]+'</span>':'')+'</div>'+
- pairHTML(c)+(LV[c.src]?'<p class="gd">'+LV[c.src]+' · '+LVD5[c.src]+'</p>':'');
+ pairHTML(c)+(LV[c.src]?'<p class="gd">'+LV[c.src]+' · '+LVD5[c.src]+'</p>':'')+phHTML(c);
  if(c.src==='속설 주의'&&c.myth)h+=sec('많이 하는 오해',c.myth,true);
  if(c.r)h+=sec('뿌리',c.r);
  if(c.src!=='속설 주의'&&c.myth)h+=sec('많이 하는 오해',c.myth,true);
